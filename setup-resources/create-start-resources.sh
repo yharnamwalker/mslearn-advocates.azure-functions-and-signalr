@@ -78,26 +78,17 @@ printf "Get storage connection string\n"
 
 
 STORAGE_CONNECTION_STRING=$(az storage account show-connection-string \
---name $(az storage account list \
-  --resource-group $RESOURCE_GROUP_NAME \
-  --query [0].name -o tsv) \
+--name $STORAGE_ACCOUNT_NAME \
 --resource-group $RESOURCE_GROUP_NAME \
 --query "connectionString" -o tsv)
-
-printf "Get account name \n" 
-
-COSMOSDB_ACCOUNT_NAME=$(az cosmosdb list \
-    --subscription "$SUBSCRIPTION_NAME" \
-    --resource-group $RESOURCE_GROUP_NAME \
-    --query [0].name -o tsv)
 
 printf "Get CosmosDB connection string \n"
 
 COSMOSDB_CONNECTION_STRING=$(az cosmosdb keys list --type connection-strings \
-  --name $COSMOSDB_ACCOUNT_NAME \
+  --name $COMSOSDB_NAME \
   --resource-group $RESOURCE_GROUP_NAME \
   --subscription "$SUBSCRIPTION_NAME" \
-  --query "connectionStrings[?description=='Primary SQL Connection String'].connectionString" -o tsv)
+  --query "connectionStrings[?keyKind=='Primary'].connectionString" -o tsv)
 
 printf "\n\nReplace <STORAGE_CONNECTION_STRING> with:\n$STORAGE_CONNECTION_STRING\n\nReplace <COSMOSDB_CONNECTION_STRING> with:\n$COSMOSDB_CONNECTION_STRING"
 

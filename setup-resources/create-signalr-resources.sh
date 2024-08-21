@@ -39,8 +39,7 @@ az resource update \
 printf "Get SignalR connection string\n"
 
 SIGNALR_CONNECTION_STRING=$(az signalr key list \
-  --name $(az signalr list \
-    --query [0].name -o tsv) \
+  --name $SIGNALR_SERVICE_NAME \
   --query primaryConnectionString -o tsv)
 
 # Add the SignalR connection string to the .env file
